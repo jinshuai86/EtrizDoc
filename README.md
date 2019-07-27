@@ -16,7 +16,7 @@
 # 记录用户行为日志模块实现描述
 主要用到了自定义注解结合Spring AOP做的实现。 下面是实现的思路以及伪码描述  
 
-1. 首先定义两个注解，分别用来修饰类和类中的方法。修饰类的注解描述了用户是在哪一个模块执行的操作，修饰方法的注解描述了用户具体执行了什么操作，下面是相应的**伪码**
+1.首先定义两个注解，分别用来修饰类和类中的方法。修饰类的注解描述了用户是在哪一个模块执行的操作，修饰方法的注解描述了用户具体执行了什么操作，下面是相应的**伪码**
 
 ```java
 /**
@@ -50,7 +50,7 @@ public @interface APIOperation {
 }
 ```
 
-2. 然后在Spring AOP的pointcut中关于这两个注解织入相应的advice，下面是相应的**伪码**  
+2.然后在Spring AOP的pointcut中关于这两个注解织入相应的advice，下面是相应的**伪码**  
 
 ```java
 /**
@@ -80,7 +80,7 @@ public class UserLog {
         ModuleOperation moduleOperation = joinPoint.getTarget().getClass().getDeclaredAnnotation(ModuleOperation.class);
         // 获取类注解中描述的具体模块以及方法注解中描述的具体操作，记录到数据库中....
         if (apiOperation != null || moduleOperation == null) {
-            log.debug("请求父模块:[{}]， 请求子模块:[{}]", moduleOperation.model, moduleOperation,subModule);
+            log.debug("请求父模块:[{}]， 请求子模块:[{}]", moduleOperation.model(), moduleOperation,subModule());
             log.debug("具体操作:[{}]", apiOperation.description());
         }
         // ....

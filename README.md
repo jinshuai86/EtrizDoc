@@ -79,7 +79,7 @@ public class UserLog {
         // 获取修饰类的自定义注解
         ModuleOperation moduleOperation = joinPoint.getTarget().getClass().getDeclaredAnnotation(ModuleOperation.class);
         // 获取类注解中描述的具体模块以及方法注解中描述的具体操作，记录到数据库中....
-        if (apiOperation != null || moduleOperation == null) {
+        if (apiOperation != null && moduleOperation != null) {
             log.debug("请求父模块:[{}]， 请求子模块:[{}]", moduleOperation.model(), moduleOperation,subModule());
             log.debug("具体操作:[{}]", apiOperation.description());
         }

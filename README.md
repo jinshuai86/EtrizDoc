@@ -4,16 +4,20 @@
 因为学校网络中心出问题了，ETRIZ的域名暂时不能用:( ，所以简历里面的URL就指向了这个静态网页。如果您感兴趣的话:)，下面是我负责的模块所用到技术的详细描述：  
 
 - 项目的首页大体是下面这样子，一共分为六个模块，每个模块中都有相应的练习题和知识点。
+
 ![homepage](./homepage.jpg)
 
 - 下面是我负责的日志模块最终实现的一个展示效果。当记录完用户日志以后，分别用BootStrap的表格插件和Echarts展示日志信息  
+
 ![grid](./grid.jpg)
+
 ![echart](./echart.jpg)
 
 # 记录用户行为日志模块实现描述
 主要用到了自定义注解结合Spring AOP做的实现。 下面是实现的思路以及伪码描述  
 
-1. 首先定义两个注解，分别用来修饰类和类中的方法。修饰类的注解描述了用户是在哪一个模块执行的操作，修饰方法的注解描述了用户具体执行了什么操作，下面是相应的**伪码**
+1.首先定义两个注解，分别用来修饰类和类中的方法。修饰类的注解描述了用户是在哪一个模块执行的操作，修饰方法的注解描述了用户具体执行了什么操作，下面是相应的**伪码**
+
 ```java
 /**
  * 描述每个类所对应的模块。
@@ -46,7 +50,8 @@ public @interface APIOperation {
 }
 ```
 
-2. 然后在Spring AOP的pointcut中关于这两个注解织入相应的advice，下面是相应的**伪码**  
+2.然后在Spring AOP的pointcut中关于这两个注解织入相应的advice，下面是相应的**伪码**  
+
 ```java
 /**
  * 获取用户在平台上产生的行为日志。
@@ -74,8 +79,8 @@ public class UserLog {
         // 获取修饰类的自定义注解
         ModuleOperation moduleOperation = joinPoint.getTarget().getClass().getDeclaredAnnotation(ModuleOperation.class);
         // 获取类注解中描述的具体模块以及方法注解中描述的具体操作，记录到数据库中....
-        if (apiOperation != null || moduleOperation == null) {
-            log.debug("请求父模块:[{}]， 请求子模块:[{}]", moduleOperation.model, moduleOperation,subModule);
+        if (apiOperation != null && moduleOperation != null) {
+            log.debug("请求父模块:[{}]， 请求子模块:[{}]", moduleOperation.model(), moduleOperation,subModule());
             log.debug("具体操作:[{}]", apiOperation.description());
         }
         // ....
